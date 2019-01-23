@@ -1,0 +1,3 @@
+fields:
+    url:
+        label: vdlp.basicauthentication::lang.input.url_label

@@ -106,7 +106,7 @@ class Plugin extends PluginBase
         header('HTTP/1.0 401 Unauthorized');
 
         echo $translator->get('vdlp.basicauthentication::lang.output.unauthorized');
-        exit;
+        exit(0);
     }
 
     /**

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 return [
     'plugin' => [
-        'name' => 'VDLP Basic Authentication',
-        'description' => 'VDLP basic authentication.',
+        'name' => 'Basic Authentication',
+        'description' => 'Allows users to manage Basic Authentication credentials for multiple hostnames and environments.',
     ],
     'settings' => [
-        'label' => 'VDLP Basic Authentication',
-        'description' => 'Setup for the VDLP basic authentication.',
+        'label' => 'Basic Authentication',
+        'description' => 'Manage Basic Authentication settings.',
     ],
     'input' => [
         'enabled_label' => 'Enabled',
@@ -43,19 +43,19 @@ return [
         ],
     ],
     'excludedurls' => [
-        'label' => 'VDLP Basic Authentication Excluded Urls',
-        'description' => 'Setup for the VDLP basic authentication.',
+        'label' => 'Basic Authentication Excluded URLs',
+        'description' => 'Setup for basic authentication.',
         'form' => [
-            'record_name_singular' => 'Excluded url',
-            'record_name_plural' => 'Excluded urls',
-            'create_title' => 'New excluded url',
-            'edit_title' => 'Edit excluded url',
+            'record_name_singular' => 'Excluded URL',
+            'record_name_plural' => 'Excluded URLs',
+            'create_title' => 'New excluded URL',
+            'edit_title' => 'Edit excluded URL',
             'delete_confirm' => 'Are you sure?',
             'return_to_list' => 'Back to list',
         ],
         'list' => [
-            'title' => 'Manage excluded urls',
-            'create_button' => 'New excluded url',
+            'title' => 'Manage excluded URLs',
+            'create_button' => 'New excluded URL',
         ],
     ],
 ];

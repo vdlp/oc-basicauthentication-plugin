@@ -8,6 +8,7 @@ use Backend\Behaviors\FormController;
 use Backend\Behaviors\ListController;
 use Backend\Classes\NavigationManager;
 use Backend\Classes\Controller;
+use Illuminate\Contracts\Config\Repository;
 use System\Classes\SettingsManager;
 
 /**
@@ -36,14 +37,19 @@ class ExcludedUrls extends Controller
     /** {@inheritdoc} */
     public $requiredPermissions = ['vdlp.basicauthentication.access_settings'];
 
+    /** @var bool */
+    public $enabled;
+
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct(Repository $config)
     {
         parent::__construct();
 
         NavigationManager::instance()->setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Vdlp.BasicAuthentication', 'excludedurls');
+
+        $this->enabled = $config->get('basicauthentication.enabled');
     }
 }

@@ -29,6 +29,12 @@ php artisan vendor:publish --provider="Vdlp\BasicAuthentication\ServiceProviders
 This will create a `config/basicauthentication.php` file in your app where you can modify the configuration if you don't
 want to use .env variables.
 
+## Enable / disable plugin
+
+By default basic authentication is disabled. 
+
+To enable basic authentication, you have to set the env variable to `BASIC_AUTHENTICATION_ENABLED` to `true` in your `.env` file or edit the published config file.
+
 ## Questions? Need help?
 
 If you have any question about how to use this plugin, please don't hesitate to contact us at octobercms@vdlp.nl. We're happy to help you. You can also visit the support forum and drop your questions/issues there.

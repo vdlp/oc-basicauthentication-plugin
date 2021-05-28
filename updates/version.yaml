@@ -1,3 +1,5 @@
 1.0.0:
-  - First version of Vdlp.BasicAuthenticationentication
-  - 20190123_000001_create_tables.php
+    - First version of Vdlp.BasicAuthenticationentication
+    - 20190123_000001_create_tables.php
+1.0.1:
+    - Update plugin dependencies

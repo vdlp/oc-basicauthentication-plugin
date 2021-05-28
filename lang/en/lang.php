@@ -58,4 +58,7 @@ return [
             'create_button' => 'New excluded URL',
         ],
     ],
+    'notifications' => [
+        'disabled' => 'Basic Authentication is disabled, you can enable it in the configuration file. Read the README for more information.',
+    ],
 ];

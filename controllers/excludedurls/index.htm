@@ -1,1 +1,12 @@
+<?php if(!$this->enabled): ?>
+    <div class="container-fluid">
+        <div class="callout fade in callout-warning no-subheader">
+            <div class="header">
+                <i class="icon-warning"></i>
+                <h3><?= e(trans('vdlp.basicauthentication::lang.notifications.disabled')) ?></h3>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
 <?= $this->listRender() ?>

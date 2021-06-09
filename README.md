@@ -8,15 +8,15 @@ Allows users to manage Basic Authentication credentials for multiple hostnames a
 
 ## Installation
 
-*CLI:*
+```
+composer require vdlp/oc-basicauthentication-plugin
+```
+
+Or:
 
 ```
 php artisan plugin:install Vdlp.BasicAuthentication
 ```
-
-*October CMS:*
-
-Go to Settings > Updates & Plugins > Install plugins and search for 'BasicAuthentication'.
 
 ## Configuration
 
@@ -26,12 +26,11 @@ To configure this plugin execute the following command:
 php artisan vendor:publish --provider="Vdlp\BasicAuthentication\ServiceProviders\BasicAuthenticationServiceProvider" --tag="config"
 ```
 
-This will create a `config/basicauthentication.php` file in your app where you can modify the configuration if you don't
-want to use .env variables.
+This will create a `config/basicauthentication.php` file in your app where you can modify the configuration if you don't want to use .env variables.
 
 ## Enable / disable plugin
 
-By default basic authentication is disabled. 
+By default basic authentication is disabled.
 
 To enable basic authentication, you have to set the env variable to `BASIC_AUTHENTICATION_ENABLED` to `true` in your `.env` file or edit the published config file.
 

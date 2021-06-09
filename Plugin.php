@@ -13,6 +13,7 @@ use October\Rain\Translation\Translator;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use System\Classes\PluginBase;
 use Vdlp\BasicAuthentication\Classes\Helper\AuthorizationHelper;
+use Vdlp\BasicAuthentication\Console\CreateCredentialsCommand;
 use Vdlp\BasicAuthentication\Models\Credential;
 use Vdlp\BasicAuthentication\ServiceProviders\BasicAuthenticationServiceProvider;
 
@@ -42,6 +43,8 @@ class Plugin extends PluginBase
     public function register(): void
     {
         $this->app->register(BasicAuthenticationServiceProvider::class);
+
+        $this->registerConsoleCommand(CreateCredentialsCommand::class, CreateCredentialsCommand::class);
     }
 
     /**

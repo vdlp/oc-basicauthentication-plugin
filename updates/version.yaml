@@ -3,3 +3,5 @@
     - 20190123_000001_create_tables.php
 1.1.0:
     - Add notification to settings view when basic authentication is disabled
+1.2.0:
+    - Add console command for adding credentials

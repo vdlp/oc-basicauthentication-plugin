@@ -5,28 +5,16 @@ declare(strict_types=1);
 namespace Vdlp\BasicAuthentication;
 
 use Backend\Helpers\Backend as BackendHelper;
-use Illuminate\Contracts\Config\Repository;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use October\Rain\Translation\Translator;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use System\Classes\PluginBase;
-use Vdlp\BasicAuthentication\Classes\Helper\AuthorizationHelper;
+use Vdlp\BasicAuthentication\Classes\AuthorizationHelper;
 use Vdlp\BasicAuthentication\Console\CreateCredentialsCommand;
 use Vdlp\BasicAuthentication\Models\Credential;
-use Vdlp\BasicAuthentication\ServiceProviders\BasicAuthenticationServiceProvider;
 
-/**
- * Class Plugin
- *
- * @package Vdlp\BasicAuthentication
- */
-class Plugin extends PluginBase
+final class Plugin extends PluginBase
 {
-    /**
-     * {@inheritdoc}
-     */
     public function pluginDetails(): array
     {
         return [
@@ -37,26 +25,22 @@ class Plugin extends PluginBase
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function register(): void
     {
-        $this->app->register(BasicAuthenticationServiceProvider::class);
+        $this->app->register(ServiceProvider::class);
 
         $this->registerConsoleCommand(CreateCredentialsCommand::class, CreateCredentialsCommand::class);
     }
 
     /**
      * {@inheritdoc}
+     *
      * @throws SuspiciousOperationException
      */
-    public function boot()
+    public function boot(): void
     {
-        /** @var Repository $config */
-        $config = resolve(Repository::class);
-
-        if (!$config->get('basicauthentication.enabled')
+        if (
+            !config('basicauthentication.enabled')
             || app()->runningInConsole()
             || app()->runningUnitTests()
             || app()->runningInBackend()
@@ -64,18 +48,13 @@ class Plugin extends PluginBase
             return;
         }
 
+        /** @var AuthorizationHelper $authorizationHelper */
+        $authorizationHelper = resolve(AuthorizationHelper::class);
+
         /** @var Request $request */
         $request = resolve(Request::class);
 
-        /** @var Session $session */
-        $session = resolve(Session::class);
-
-        /** @var Translator $translator */
-        $translator = resolve('translator');
-
-        /** @var AuthorizationHelper $authorizationHelper */
-        $authorizationHelper = resolve(AuthorizationHelper::class);
-        if ($authorizationHelper->isIpAddressWhitelisted($request->ip())) {
+        if ($authorizationHelper->isIpAddressWhitelisted((string) $request->ip())) {
             return;
         }
 
@@ -94,27 +73,27 @@ class Plugin extends PluginBase
         }
 
         $sessionKey = str_slug(str_replace('.', '_', $credential->getAttribute('hostname')) . '_basic_authentication');
-        if ($session->has($sessionKey)) {
+
+        if (session()->has($sessionKey)) {
             return;
         }
 
-        if ($request->getUser() === $credential->getAttribute('username')
+        if (
+            $request->getUser() === $credential->getAttribute('username')
             && $request->getPassword() === $credential->getAttribute('password')
         ) {
-            $session->put($sessionKey, $request->getUser());
+            session()->put($sessionKey, $request->getUser());
+
             return;
         }
 
         header('WWW-Authenticate: Basic realm="' . $credential->getAttribute('realm') . '"');
         header('HTTP/1.0 401 Unauthorized');
 
-        echo $translator->get('vdlp.basicauthentication::lang.output.unauthorized');
+        echo (string) trans('vdlp.basicauthentication::lang.output.unauthorized');
         exit(0);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerPermissions(): array
     {
         return [
@@ -125,9 +104,6 @@ class Plugin extends PluginBase
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerSettings(): array
     {
         /** @var BackendHelper $backendHelper */

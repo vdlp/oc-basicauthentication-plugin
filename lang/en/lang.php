@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'plugin' => [
         'name' => 'Basic Authentication',
-        'description' => 'Allows users to manage Basic Authentication credentials for multiple hostnames and environments.',
+        'description' => 'Protect your website with Basic Authentication.',
     ],
     'settings' => [
         'label' => 'Basic Authentication',
@@ -17,7 +17,7 @@ return [
         'password_label' => 'Password',
         'realm_label' => 'Realm',
         'hostname_label' => 'Hostname',
-        'url_label' => 'Url',
+        'url_label' => 'URL',
     ],
     'output' => [
         'unauthorized' => 'Unauthorized access is not allowed.',

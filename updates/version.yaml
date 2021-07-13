@@ -1,7 +1,6 @@
 1.0.0:
     - First version of Vdlp.BasicAuthenticationentication
     - 20190123_000001_create_tables.php
-1.1.0:
-    - Add notification to settings view when basic authentication is disabled
-1.2.0:
-    - Add console command for adding credentials
+1.1.0: "Add notification to settings view when basic authentication is disabled"
+1.2.0: "Add console command for adding credentials"
+2.0.0: "Add support for PHP 7.4 and higher"

@@ -12,37 +12,21 @@ use Illuminate\Contracts\Config\Repository;
 use System\Classes\SettingsManager;
 
 /**
- * Class Credentials
- *
- * Credentials Back-end Controller.
- *
- * @package Vdlp\BasicAuthentication\Controllers
  * @mixin ListController
  * @mixin FormController
  */
-class Credentials extends Controller
+final class Credentials extends Controller
 {
-    /** {@inheritdoc} */
     public $implement = [
         FormController::class,
         ListController::class,
     ];
 
-    /** @var string */
-    public $formConfig = 'config_form.yaml';
-
-    /** @var string */
-    public $listConfig = 'config_list.yaml';
-
-    /** {@inheritdoc} */
+    public string $formConfig = 'config_form.yaml';
+    public string $listConfig = 'config_list.yaml';
+    public bool $enabled;
     public $requiredPermissions = ['vdlp.basicauthentication.access_settings'];
 
-    /** @var bool */
-    public $enabled;
-
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(Repository $config)
     {
         parent::__construct();

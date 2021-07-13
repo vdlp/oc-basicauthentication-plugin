@@ -1,6 +1,6 @@
 {
     "name": "vdlp/oc-basicauthentication-plugin",
-    "description": "Allows you to manage Basic Authentication credentials in October CMS powered websites.",
+    "description": "Protect your website with Basic Authentication.",
     "type": "october-plugin",
     "license": "GPL-2.0",
     "authors": [
@@ -13,7 +13,7 @@
         "email": "octobercms@vdlp.nl"
     },
     "require": {
-        "php": "^7.1||^8.0",
+        "php": "^7.4 || ^8.0",
         "composer/installers": "^1.0"
     }
 }

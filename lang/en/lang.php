@@ -18,6 +18,7 @@ return [
         'realm_label' => 'Realm',
         'hostname_label' => 'Hostname',
         'url_label' => 'URL',
+        'url_comment' => 'The URL to exclude. E.g. https://example.com/path/other-path',
     ],
     'output' => [
         'unauthorized' => 'Unauthorized access is not allowed.',

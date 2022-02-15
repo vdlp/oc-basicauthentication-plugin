@@ -17,7 +17,7 @@ composer require vdlp/oc-basicauthentication-plugin
 To configure this plugin execute the following command:
 
 ```
-php artisan vendor:publish --provider="Vdlp\BasicAuthentication\ServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Vdlp\BasicAuthentication\ServiceProviders\BasicAuthenticationServiceProvider" --tag="config"
 ```
 
 This will create a `config/basicauthentication.php` file in your app where you can modify the configuration if you don't want to use `.env` variables.

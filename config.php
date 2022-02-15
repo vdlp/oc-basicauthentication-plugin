@@ -13,6 +13,7 @@ return [
     | BASIC_AUTHENTICATION_ENABLED to your .env file.
     |
     */
+
     'enabled' => (bool) env('BASIC_AUTHENTICATION_ENABLED', false),
 
     /*
@@ -23,6 +24,7 @@ return [
     | Provide a comma separated list of IP addresses to whitelist.
     |
     */
+
     'whitelisted_ips' => env('BASIC_AUTHENTICATION_WHITELISTED_IPS', ''),
 
 ];

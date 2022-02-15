@@ -6,8 +6,8 @@ namespace Vdlp\BasicAuthentication\Controllers;
 
 use Backend\Behaviors\FormController;
 use Backend\Behaviors\ListController;
-use Backend\Classes\NavigationManager;
 use Backend\Classes\Controller;
+use Backend\Classes\NavigationManager;
 use Illuminate\Contracts\Config\Repository;
 use System\Classes\SettingsManager;
 
@@ -34,6 +34,6 @@ final class Credentials extends Controller
         NavigationManager::instance()->setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Vdlp.BasicAuthentication', 'credentials');
 
-        $this->enabled = $config->get('basicauthentication.enabled');
+        $this->enabled = (bool) $config->get('basicauthentication.enabled', false);
     }
 }

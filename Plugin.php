@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Vdlp\BasicAuthentication;
 
 use Backend\Helpers\Backend as BackendHelper;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
+use October\Rain\Foundation\Application;
+use October\Rain\Foundation\Http\Kernel;
 use System\Classes\PluginBase;
-use Vdlp\BasicAuthentication\Classes\AuthorizationHelper;
 use Vdlp\BasicAuthentication\Console\CreateCredentialsCommand;
-use Vdlp\BasicAuthentication\Models\Credential;
+use Vdlp\BasicAuthentication\Http\Middleware\BasicAuthenticationMiddleware;
+use Vdlp\BasicAuthentication\ServiceProviders\BasicAuthenticationServiceProvider;
 
 final class Plugin extends PluginBase
 {
@@ -27,71 +26,28 @@ final class Plugin extends PluginBase
 
     public function register(): void
     {
-        $this->app->register(ServiceProvider::class);
+        $this->app->register(BasicAuthenticationServiceProvider::class);
 
         $this->registerConsoleCommand(CreateCredentialsCommand::class, CreateCredentialsCommand::class);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws SuspiciousOperationException
-     */
     public function boot(): void
     {
+        /** @var Application $application */
+        $application = $this->app;
+
         if (
-            !config('basicauthentication.enabled')
-            || app()->runningInConsole()
-            || app()->runningUnitTests()
-            || app()->runningInBackend()
+            (bool) config('basicauthentication.enabled', false) === false
+            || $application->runningInConsole()
+            || $application->runningUnitTests()
+            || $application->runningInBackend()
         ) {
             return;
         }
 
-        /** @var AuthorizationHelper $authorizationHelper */
-        $authorizationHelper = resolve(AuthorizationHelper::class);
-
-        /** @var Request $request */
-        $request = resolve(Request::class);
-
-        if ($authorizationHelper->isIpAddressWhitelisted((string) $request->ip())) {
-            return;
-        }
-
-        try {
-            /** @var Credential $credential */
-            $credential = Credential::query()
-                ->where('hostname', '=', $request->getHost())
-                ->where('is_enabled', '=', true)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return;
-        }
-
-        if ($authorizationHelper->isUrlExcluded($request->getUri())) {
-            return;
-        }
-
-        $sessionKey = str_slug(str_replace('.', '_', $credential->getAttribute('hostname')) . '_basic_authentication');
-
-        if (session()->has($sessionKey)) {
-            return;
-        }
-
-        if (
-            $request->getUser() === $credential->getAttribute('username')
-            && $request->getPassword() === $credential->getAttribute('password')
-        ) {
-            session()->put($sessionKey, $request->getUser());
-
-            return;
-        }
-
-        header('WWW-Authenticate: Basic realm="' . $credential->getAttribute('realm') . '"');
-        header('HTTP/1.0 401 Unauthorized');
-
-        echo (string) trans('vdlp.basicauthentication::lang.output.unauthorized');
-        exit(0);
+        /** @var Kernel $kernel */
+        $kernel = $application['Illuminate\Contracts\Http\Kernel'];
+        $kernel->prependMiddleware(BasicAuthenticationMiddleware::class);
     }
 
     public function registerPermissions(): array

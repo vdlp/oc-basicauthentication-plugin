@@ -34,8 +34,8 @@ final class CreateCredentialsCommand extends Command
                 ]);
 
             $this->info('Basic Authentication credentials have been added to the database.');
-        } catch (Throwable $e) {
-            $this->error('Could not create Basic Authentication credentials: ' . $e->getMessage());
+        } catch (Throwable $throwable) {
+            $this->error('Could not create Basic Authentication credentials: ' . $throwable->getMessage());
         }
     }
 }

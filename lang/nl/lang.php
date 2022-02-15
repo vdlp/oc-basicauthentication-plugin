@@ -18,6 +18,7 @@ return [
         'realm_label' => 'Omgeving',
         'hostname_label' => 'Hostnaam',
         'url_label' => 'URL',
+        'url_comment' => 'De volledige URL die wordt uitgesloten. Bijv. https://example.com/pad/ander-path',
     ],
     'output' => [
         'unauthorized' => 'Ongeautoriseerde toegang is geweigerd.',

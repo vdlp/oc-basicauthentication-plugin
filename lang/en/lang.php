@@ -15,13 +15,21 @@ return [
         'enabled_label' => 'Enabled',
         'username_label' => 'Username',
         'password_label' => 'Password',
+        'password_confirmation_label' => 'Confirm Password',
         'realm_label' => 'Realm',
         'hostname_label' => 'Hostname',
-        'url_label' => 'URL',
-        'url_comment' => 'The URL to exclude. E.g. https://example.com/path/other-path',
+        'hostname_comment' => 'For example: staging.example.com',
+        'whitelist_label' => 'Whitelist',
+        'whitelist_comment' => 'Whitelisted paths will not be protected with Basic Authentication credentials.',
+        'whitelist_prompt' => 'Add new path to whitelist',
+        'absolute_path_label' => 'Absolute path',
+        'absolute_path_comment' => 'For example: /api/v1/authenticate',
     ],
     'output' => [
         'unauthorized' => 'Unauthorized access is not allowed.',
+    ],
+    'validation' => [
+        'hostname_unique' => 'Hostname already exists.',
     ],
     'permissions' => [
         'access_settings' => [
@@ -31,7 +39,7 @@ return [
     ],
     'credentials' => [
         'form' => [
-            'record_name_singular' => 'credential',
+            'record_name_singular' => 'Credential',
             'record_name_plural' => 'Credentials',
             'create_title' => 'New credentials',
             'edit_title' => 'Edit credentials',
@@ -43,23 +51,7 @@ return [
             'create_button' => 'New credentials',
         ],
     ],
-    'excludedurls' => [
-        'label' => 'Basic Authentication Excluded URLs',
-        'description' => 'Setup for basic authentication.',
-        'form' => [
-            'record_name_singular' => 'Excluded URL',
-            'record_name_plural' => 'Excluded URLs',
-            'create_title' => 'New excluded URL',
-            'edit_title' => 'Edit excluded URL',
-            'delete_confirm' => 'Are you sure?',
-            'return_to_list' => 'Back to list',
-        ],
-        'list' => [
-            'title' => 'Manage excluded URLs',
-            'create_button' => 'New excluded URL',
-        ],
-    ],
     'notifications' => [
-        'disabled' => 'Basic Authentication is disabled, you can enable it in the configuration file. Read the README for more information.',
+        'disabled' => 'Basic Authentication is disabled, you can enable it in the configuration file. Check README for instructions.',
     ],
 ];

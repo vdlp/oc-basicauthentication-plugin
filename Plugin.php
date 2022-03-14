@@ -76,16 +76,6 @@ final class Plugin extends PluginBase
                 'keywords' => 'basic authentication security',
                 'order' => 500,
             ],
-            'excludedurls' => [
-                'label' => 'vdlp.basicauthentication::lang.excludedurls.label',
-                'description' => 'vdlp.basicauthentication::lang.excludedurls.description',
-                'url' => $backendHelper->url('vdlp/basicauthentication/excludedurls'),
-                'category' => 'Basic Authentication',
-                'icon' => 'icon-link',
-                'permissions' => ['vdlp.basicauthentication.*'],
-                'keywords' => 'basic authentication security',
-                'order' => 501,
-            ],
         ];
     }
 }

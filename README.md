@@ -4,6 +4,7 @@ Allows users to manage Basic Authentication credentials for multiple hostnames a
 
 ## Requirements
 
+* October CMS ^1.1
 * PHP 7.4 or higher
 
 ## Installation

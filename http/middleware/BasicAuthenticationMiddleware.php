@@ -5,25 +5,28 @@ declare(strict_types=1);
 namespace Vdlp\BasicAuthentication\Http\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Vdlp\BasicAuthentication\Models\Credential;
-use Vdlp\BasicAuthentication\Models\ExcludedUrl;
 
 final class BasicAuthenticationMiddleware
 {
     private Session $session;
     private Translator $translator;
+    private Hasher $hasher;
 
-    public function __construct(Session $session, Translator $translator)
+    public function __construct(Session $session, Translator $translator, Hasher $hasher)
     {
         $this->session = $session;
         $this->translator = $translator;
+        $this->hasher = $hasher;
     }
 
     /**
@@ -43,14 +46,16 @@ final class BasicAuthenticationMiddleware
             $credential = Credential::query()
                 ->where('hostname', $request->getHost())
                 ->where('is_enabled', true)
-                ->firstOrFail(['hostname', 'username', 'password', 'realm']);
+                ->firstOrFail(['hostname', 'username', 'password', 'realm', 'whitelist']);
         } catch (ModelNotFoundException $exception) {
             // @ignoreException
             return $next($request);
         }
 
+        $path = Str::replaceFirst($request->getSchemeAndHttpHost(), '', $request->getUri());
+
         // Current URI excluded so authorisation is not required.
-        if ($this->isUrlExcluded($request)) {
+        if ($this->isPathWhitelisted($path, $credential)) {
             return $next($request);
         }
 
@@ -61,13 +66,30 @@ final class BasicAuthenticationMiddleware
             return $next($request);
         }
 
+        $needsRehash = $this->hasher->needsRehash($credential->password);
+
         // Validate credentials.
-        if ($request->getUser() === $credential->username && $request->getPassword() === $credential->password) {
+        if ($request->getUser() === $credential->username) {
+            // Check unhashed password.
+            if ($needsRehash && $request->getPassword() !== $credential->password) {
+                return $this->getUnauthorizedResponse($credential);
+            }
+
+            // Check hashed password.
+            if (!$needsRehash && !$this->hasher->check((string) $request->getPassword(), $credential->password)) {
+                return $this->getUnauthorizedResponse($credential);
+            }
+
             $this->session->put($sessionKey, $request->getUser());
 
             return $next($request);
         }
 
+        return $this->getUnauthorizedResponse($credential);
+    }
+
+    private function getUnauthorizedResponse(Credential $credential): Response
+    {
         return new Response(
             $this->translator->get('vdlp.basicauthentication::lang.output.unauthorized'),
             401,
@@ -77,44 +99,23 @@ final class BasicAuthenticationMiddleware
         );
     }
 
-    /**
-     * @throws SuspiciousOperationException
-     */
-    private function isUrlExcluded(Request $request): bool
+    private function isPathWhitelisted(string $absolutePath, Credential $credential): bool
     {
-        /** @var array|mixed $parsedCurrentUrl */
-        $parsedCurrentUrl = parse_url($request->getUri());
-
-        if (!is_array($parsedCurrentUrl)) {
+        if ($credential->whitelist === null) {
             return false;
         }
 
-        /** @var ExcludedUrl[] $excludedUrls */
-        $excludedUrls = ExcludedUrl::all();
+        foreach ($credential->whitelist as $whitelist) {
+            $type = $whitelist['matching_type'] ?? 'exact';
+            $whitelistAbsolutePath = (string) ($whitelist['absolute_path'] ?? '');
 
-        foreach ($excludedUrls as $excludedUrl) {
-            /** @var array|mixed $parsedExcludedUrl */
-            $parsedExcludedUrl = parse_url($excludedUrl->url);
-
-            if (!is_array($parsedExcludedUrl)) {
-                continue;
-            }
-
-            $host = $parsedCurrentUrl['host'] ?? '';
-
-            if (
-                array_key_exists('host', $parsedExcludedUrl)
-                && $host !== $request->getHost()
-            ) {
-                continue;
-            }
-
-            if (
-                array_key_exists('path', $parsedExcludedUrl)
-                && array_key_exists('path', $parsedCurrentUrl)
-                && $parsedExcludedUrl['path'] === $parsedCurrentUrl['path']
-            ) {
-                return true;
+            switch ($type) {
+                case 'exact':
+                    return $absolutePath === $whitelistAbsolutePath;
+                case 'starts_with':
+                    return Str::startsWith($absolutePath, $whitelistAbsolutePath);
+                default:
+                    break;
             }
         }
 

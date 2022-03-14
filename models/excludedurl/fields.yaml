@@ -1,7 +1,0 @@
-fields:
-    url:
-        label: vdlp.basicauthentication::lang.input.url_label
-        comment: vdlp.basicauthentication::lang.input.url_comment
-        span: left
-        attributes:
-            maxlength: 191

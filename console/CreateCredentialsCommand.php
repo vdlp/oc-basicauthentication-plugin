@@ -18,24 +18,38 @@ final class CreateCredentialsCommand extends Command
         parent::__construct();
     }
 
-    public function handle(): void
+    public function handle(): int
     {
-        try {
-            Credential::query()
-                ->updateOrInsert([
-                    'hostname' => $this->argument('hostname'),
-                ], [
-                    'realm' => $this->argument('realm'),
-                    'username' => $this->argument('username'),
-                    'password' => $this->argument('password'),
-                    'is_enabled' => true,
-                    'updated_at' => now(),
-                    'created_at' => now(),
-                ]);
+        $exists = Credential::query()
+            ->where('hostname', $this->argument('hostname'))
+            ->exists();
 
-            $this->info('Basic Authentication credentials have been added to the database.');
+        if ($exists) {
+            $this->error('Hostname already exists.');
+
+            return 1;
+        }
+
+        try {
+            $credential = new Credential([
+                'hostname' => $this->argument('hostname'),
+                'realm' => $this->argument('realm'),
+                'username' => $this->argument('username'),
+                'password' => $this->argument('password'),
+                'is_enabled' => true,
+                'updated_at' => now(),
+                'created_at' => now(),
+            ]);
+
+            $credential->forceSave();
         } catch (Throwable $throwable) {
             $this->error('Could not create Basic Authentication credentials: ' . $throwable->getMessage());
+
+            return 2;
         }
+
+        $this->info('Basic Authentication credentials have been added to the database.');
+
+        return 0;
     }
 }

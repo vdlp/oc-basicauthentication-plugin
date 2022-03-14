@@ -15,13 +15,21 @@ return [
         'enabled_label' => 'Ingeschakeld',
         'username_label' => 'Gebruikersnaam',
         'password_label' => 'Wachtwoord',
+        'password_confirmation_label' => 'Bevestig wachtwoord',
         'realm_label' => 'Omgeving',
         'hostname_label' => 'Hostnaam',
-        'url_label' => 'URL',
-        'url_comment' => 'De volledige URL die wordt uitgesloten. Bijv. https://example.com/pad/ander-path',
+        'hostname_comment' => 'Bijvoorbeeld: staging.example.com',
+        'whitelist_label' => 'Whitelist',
+        'whitelist_comment' => 'Paden in de whitelist worden niet beveiligd met Basic Authentication credentials.',
+        'whitelist_prompt' => 'Nieuw pad toevoegen aan whitelist',
+        'absolute_path_label' => 'Absoluut pad',
+        'absolute_path_comment' => 'Bijvoorbeeld: /api/v1/authenticate',
     ],
     'output' => [
         'unauthorized' => 'Ongeautoriseerde toegang is geweigerd.',
+    ],
+    'validation' => [
+        'hostname_unique' => 'Hostnaam bestaat reeds.',
     ],
     'permissions' => [
         'access_settings' => [
@@ -41,22 +49,6 @@ return [
         'list' => [
             'title' => 'Beheer credentials',
             'create_button' => 'Nieuwe credentials',
-        ],
-    ],
-    'excludedurls' => [
-        'label' => 'Basic Authentication uitgesloten URLs',
-        'description' => 'Setup voor basic authentication.',
-        'form' => [
-            'record_name_singular' => 'Uitgesloten URL',
-            'record_name_plural' => 'Uitgesloten URLs',
-            'create_title' => 'Nieuwe uitgesloten URL',
-            'edit_title' => 'Wijzig uitgesloten URL',
-            'delete_confirm' => 'Weet je het zeker?',
-            'return_to_list' => 'Terug naar overzicht',
-        ],
-        'list' => [
-            'title' => 'Beheer uitgesloten URLs',
-            'create_button' => 'Nieuwe uitgesloten URL',
         ],
     ],
     'notifications' => [

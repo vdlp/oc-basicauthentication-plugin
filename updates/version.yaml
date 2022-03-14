@@ -1,7 +1,11 @@
 v1.0.0:
-    - First version of Vdlp.BasicAuthentication
+    - "First version of Vdlp.BasicAuthentication"
     - 20190123_000001_create_tables.php
 v1.1.0: "Add notification to settings view when basic authentication is disabled."
 v1.2.0: "Add console command for adding credentials."
 v2.0.0: "Add support for PHP 7.4 and higher."
 v2.1.0: "Maintenance update. Check CHANGELOG.md for details."
+v3.0.0:
+    - "Improve white-listing of URLs."
+    - 20220314_000002_drop_excluded_urls_table.php
+    - 20220314_000003_add_whitelist_column_to_credentials_table.php

@@ -32,6 +32,7 @@ final class Credentials extends Controller
         parent::__construct();
 
         NavigationManager::instance()->setContext('October.System', 'system', 'settings');
+
         SettingsManager::setContext('Vdlp.BasicAuthentication', 'credentials');
 
         $this->enabled = (bool) $config->get('basicauthentication.enabled', false);

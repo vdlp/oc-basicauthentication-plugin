@@ -9,3 +9,5 @@ v3.0.0:
     - "Improve white-listing of URLs."
     - 20220314_000002_drop_excluded_urls_table.php
     - 20220314_000003_add_whitelist_column_to_credentials_table.php
+v3.0.1:
+    - "Update october/system version constraint."

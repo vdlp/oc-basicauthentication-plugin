@@ -8,7 +8,7 @@ use October\Rain\Database\Schema\Blueprint;
 use October\Rain\Database\Updates\Migration;
 use October\Rain\Support\Facades\Schema;
 
-final class CreateTables extends Migration
+final class AddWhitelistColumnToCredentialsTable extends Migration
 {
     public function up(): void
     {

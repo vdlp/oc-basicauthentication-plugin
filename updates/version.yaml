@@ -11,3 +11,5 @@ v3.0.0:
     - 20220314_000003_add_whitelist_column_to_credentials_table.php
 v3.0.1:
     - "Update october/system version constraint."
+v3.0.2:
+    - "Rename migration class (duplicate class name)."

@@ -13,3 +13,4 @@ v3.0.1:
     - "Update october/system version constraint."
 v3.0.2:
     - "Rename migration class (duplicate class name)."
+v3.1.0: "Add October CMS 3.x to supported versions."

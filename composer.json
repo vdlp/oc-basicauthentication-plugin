@@ -29,5 +29,10 @@
             ".gitignore",
             ".github"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }

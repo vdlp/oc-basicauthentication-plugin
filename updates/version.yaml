@@ -14,3 +14,4 @@ v3.0.1:
 v3.0.2:
     - "Rename migration class (duplicate class name)."
 v3.1.0: "Add October CMS 3.x to supported versions."
+v3.2.0: "Basic Authentication added to October CMS backend routes."

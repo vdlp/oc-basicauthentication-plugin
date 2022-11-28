@@ -6,7 +6,7 @@ namespace Vdlp\BasicAuthentication\Updates;
 
 use October\Rain\Database\Schema\Blueprint;
 use October\Rain\Database\Updates\Migration;
-use October\Rain\Support\Facades\Schema;
+use Schema;
 
 final class AddWhitelistColumnToCredentialsTable extends Migration
 {

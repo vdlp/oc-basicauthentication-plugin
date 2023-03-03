@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Vdlp\BasicAuthentication;
 
 use Backend\Helpers\Backend as BackendHelper;
-use Illuminate\Routing\Router;
-use October\Rain\Foundation\Application;
+use Illuminate\Contracts\Http\Kernel;
 use System\Classes\PluginBase;
 use Vdlp\BasicAuthentication\Console\CreateCredentialsCommand;
 use Vdlp\BasicAuthentication\Http\Middleware\BasicAuthenticationMiddleware;
@@ -24,29 +23,25 @@ final class Plugin extends PluginBase
         ];
     }
 
+    public function boot(): void
+    {
+        if (
+            (bool) config('basicauthentication.enabled', false) === false
+            || $this->app->runningInConsole()
+            || $this->app->runningUnitTests()
+        ) {
+            return;
+        }
+
+        $this->app[Kernel::class]
+            ->pushMiddleware(BasicAuthenticationMiddleware::class);
+    }
+
     public function register(): void
     {
         $this->app->register(BasicAuthenticationServiceProvider::class);
 
         $this->registerConsoleCommand(CreateCredentialsCommand::class, CreateCredentialsCommand::class);
-    }
-
-    public function boot(): void
-    {
-        /** @var Application $application */
-        $application = $this->app;
-
-        if (
-            (bool) config('basicauthentication.enabled', false) === false
-            || $application->runningInConsole()
-            || $application->runningUnitTests()
-        ) {
-            return;
-        }
-
-        /** @var Router $router */
-        $router = $application->make(Router::class);
-        $router->pushMiddlewareToGroup('web', BasicAuthenticationMiddleware::class);
     }
 
     public function registerPermissions(): array

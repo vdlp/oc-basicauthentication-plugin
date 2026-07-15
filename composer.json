@@ -3,6 +3,7 @@
     "description": "Protect your website with Basic Authentication.",
     "license": "GPL-2.0-only",
     "type": "october-plugin",
+    "abandoned": true,
     "authors": [
         {
             "name": "Van der Let & Partners",

@@ -3,6 +3,7 @@
     "description": "Protect your website with Basic Authentication.",
     "license": "GPL-2.0-only",
     "type": "october-plugin",
+    "abandoned": true,
     "authors": [
         {
             "name": "Van der Let & Partners",
@@ -17,22 +18,19 @@
         "composer/installers": "^1.0 || ^2.0",
         "october/rain": ">=2.0"
     },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.42"
+    },
     "repositories": [
         {
             "type": "composer",
             "url": "https://gateway.octobercms.com"
         }
     ],
-    "archive": {
-        "exclude": [
-            ".gitattributes",
-            ".gitignore",
-            ".github"
-        ]
-    },
     "config": {
         "allow-plugins": {
-            "composer/installers": true
+            "composer/installers": true,
+            "ergebnis/composer-normalize": true
         }
     }
 }
